@@ -1,4 +1,5 @@
 ﻿from ast import Name
+from calendar import c
 from http.client import PARTIAL_CONTENT
 from lib2to3.pgen2 import driver
 from nntplib import ArticleInfo
@@ -28,6 +29,24 @@ class TabInd:
             
 def GettingColltction(driver):
     
+    # driver.get("https://www.okeanobuvi.ru/")
+    # time.sleep(5)
+
+    # ModlWind = driver.find_element(By.XPATH,"//div[@class = 'navbar-header col-md-1']/button")
+    # ModlWind.click()
+   
+    # MenyCats = driver.find_elements(By.XPATH,"//ul[@class = 'nav-child--show']/li/a")
+    # for Index, MenyCat in enumerate(MenyCats):
+    #     if Index != 3:
+    #         Insetlinks = MenyCat.find_elements(By.TAG_NAME, "li")
+    #         for Index, MenyCat in enumerate(MenyCats):
+    #              if Index != 2:  
+    #                  Catlinks = Insetlinks.find_elements(By.TAG_NAME, "a")
+    #                  for CT in Catlinks:
+    #                      Category = CT.text
+    #                      CatLink = CT.get_attribute("href")
+    #                      driver.get(CatLink)
+    #//ul[@class = 'nav-child unstyled small']/li
     driver.get("https://www.okeanobuvi.ru/%D0%BE%D0%B1%D1%83%D0%B2%D1%8C/%D0%B6%D0%B5%D0%BD%D1%81%D0%BA%D0%B0%D1%8F/%D0%B1%D0%B0%D0%BB%D0%B5%D1%82%D0%BA%D0%B8")
   
     LinksGoods = []                      
