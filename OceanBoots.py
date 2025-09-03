@@ -31,16 +31,17 @@ class TabInd:
 def GettingColltction(driver):
     
     wb = load_workbook(CollectionFilePath)
-    for sheet in wb.worksheets:
-       ws  = wb[sheet.title]
+    for sh in wb.worksheets:
+       ws  = wb[sh.title]
        # ws = wb.active 
        LinkPages = [] 
-       last_collection = ws[2][0].value  
+       last_collection = ws[2][0].value        
        for row in range(2, ws.max_row+1):  
             current_collection = ws[row][0].value 
             if current_collection == None: break  
             if last_collection !=  current_collection : 
-                 ParsingCollection(driver, LinkPages, last_collection)             
+                 ParsingCollection(driver, LinkPages, last_collection)  
+                 LinkPages.clear()
             LinkPages.append(ws[row][2].value) 
             last_collection = current_collection
        ParsingCollection(driver, LinkPages, last_collection)
@@ -56,18 +57,18 @@ def ParsingCollection(driver, LinkPages, last_collection):
             for LG in ListLG: LinksGoods.append(LG.get_attribute("href")) 
         except: print("Категория не имеет товаров")      
    ParsingGoods(driver, LinksGoods,last_collection)    
+   # LinksGoods.clear()
 
 def ParsingGoods(driver, LinksGoods, last_collection):
     
     Goods = []  
-    for Link in LinksGoods:  
-        driver.get(Link)
-        
+    for Link in LinksGoods: 
+        print(last_collection)
+        driver.get(Link)   
         try:
            # Отбор товаров  
            OnSale = driver.find_element(By.XPATH,"//span[@class = 'in-stock']").text 
            if OnSale  == "В наличии":
-          
                 # Cбор данных товаров
                 Article = driver.find_element(By.XPATH,"//span[@class = 'sku']").text
                 Color = Article.split('/')[-1]
@@ -75,7 +76,7 @@ def ParsingGoods(driver, LinksGoods, last_collection):
                 FName = driver.find_element(By.XPATH,"//h1").text 
                 Name1 = FName + " "+ Color
                 Brand = FName.split()[-1]
-   
+
                 try:
                     Price = driver.find_element(By.XPATH,"//div[@class = 'product-price with-discount']/span[@itemprop = 'price']").text
                 except: Price = driver.find_element(By.XPATH,"//div[@class = 'product-price']/span[@itemprop = 'price']").text
@@ -139,7 +140,8 @@ def ParsingGoods(driver, LinksGoods, last_collection):
         except:
             print("При сборе данных возникла ошибка") 
     RecordingToExcel(Goods,last_collection)       
-           
+    # Goods.clear()
+    
 def RecordingToExcel(Goods,CollectionName): 
     
     if os.path.exists(file_name):
@@ -183,13 +185,14 @@ def RecordingToExcel(Goods,CollectionName):
         wb.save(file_path)   
     except: pass 
 
-
+# Главнвя процедура
 s=Service(ChromedriverPuth)
 driver = webdriver.Chrome(service=s)
 
 GettingColltction(driver)
 print()
 
+#То что не вышло:
   # ModlWind = driver.find_element(By.XPATH,"//div[@class = 'navbar-header col-md-1']/button")
     # ModlWind.click()
    
@@ -205,7 +208,6 @@ print()
     #                      CatLink = CT.get_attribute("href")
     #                      driver.get(CatLink)
     #//ul[@class = 'nav-child unstyled small']/li
-    
     
     # WBootsCat = {    
     #     "Кросовики": "Жен Кросовики Кеды", 
